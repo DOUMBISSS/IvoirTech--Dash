@@ -1,38 +1,315 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;700&family=Bebas+Neue&family=Cairo:wght@300;700&family=Edu+VIC+WA+NT+Beginner&family=Montserrat:wght@100&family=Mouse+Memoirs&family=Orbitron&family=Oswald:wght@200&family=Play&family=Rajdhani:wght@300;700&family=Teko:wght@300;400&family=Titillium+Web:ital,wght@0,700;1,200&display=swap');
+*{
+  /* font-family: 'Advent Pro', sans-serif; */
+  /* font-family: 'Oswald', sans-serif; */
+  font-family: 'Rajdhani', sans-serif;
+  margin:0; padding:0;
+  box-sizing: border-box;
+  outline: none; border:none;
+  transition: all .2s linear;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* body{
+  animation: fadeInLeft 1s linear;
+} */
+header{
+  width: 20%;
+  height: 100vh;
+  background-color: #191919;
+  border: 1px solid coral;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.navbar--header{
+  width: 100%;
+  height: 20%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+.navbar--logo{
+  width: 230px;
+  height: 80px;
+}
+.navbar--logo img{
+  width: 100%;
+  height: 100%;
+}
+.navbar--content{
+  width: 100%;
+  padding: 0.7rem;
+}
+.navbar--content i{
+  margin-right: 0.5rem;
+}
+.liste{
+  padding: 1rem;
+  list-style: none;
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border-bottom: 1px solid gainsboro;
+}
+.liste:hover{
+  color: #f9004d;
+}
+main{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.home--part{
+  width: 80%;
+  border:1px solid coral;
+}
+h1{
+  font-size: 4rem;
+}
+.slogan > p{
+  font-size: 2rem;
+}
+.main--part{
+  width: 100%;
+  height:100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInRight 1s linear;
+  background-image: url('https://images.unsplash.com/photo-1462899006636-339e08d1844e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGJ1aWxkaW5nfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60');
+}
+.slogan{
+  width: 50%;
+  height: 50%;
+  text-align: center;
+  animation:fadeInRight 1s linear;
+}
+.slogan--image{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slogan--image--box{
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid coral;
+}
+.slogan--image--box img{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+span{
+  color: #f9004d;
+}
+.service{
+	background-color: #101010;
+	width: 100%;
+	padding: 100px 0px;
+}
+.card__content{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 400px;
+}
+.card{
+	height: 365px;
+	width: 335px;
+	padding: 20px 35px;
+	background: #000;
+	border-radius: 20px;
+	margin: 15px;
+	position: relative;
+	overflow: hidden;
+	text-align: center;
+}
+.card i{
+	font-size: 50px;
+	display: block;
+	text-align: center;
+	margin: 25px 0px;
+	color: #f9004d;
+}
+.services--header{
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  font-size: 5rem;
+  padding: 1rem;
+}
+.card--title{
+	color: white;
+  font-weight: bold;
+	font-size: 23px;
+	margin-bottom: 15px;
+}
+.card--body p{
+	color: #fcfc;
+	font-size: 1rem;
+	line-height: 27px;
+	margin-bottom: 25px;
+  font-weight: bold;
+}
+.card .button{
+	background-color:#f9004d;
+	color: white;
+	text-decoration: none;
+	border: 2px solid transparent;
+	font-weight: bold;
+	padding: 9px 22px;
+	border-radius: 30px;
+	transition: .4s; 
+}
+.card .button:hover{
+	background-color: transparent;
+	border: 2px solid #f9004d;
+	cursor: pointer;
+}
+.main__part__services{
+  background-color: #191919;
+  width: 100%;
+  height: 100vh;
+  animation:fadeInRight 1s linear;
+}
+.btn__more{
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  background-color: #f9004d;
+}
+.btn__more:hover{
+  background-color: #fff;
+}
+.description--enterprise{
+  width: 100%;
+  height: 100vh;
+  padding: 0px 5rem;
+  display: flex;
+  background-color: rgb(238, 236, 236);
+  animation:fadeInRight 1s linear;
+}
+.description--enterprise--content--left{
+  width: 50%;
+  padding: 1rem;
+}
+.description--enterprise--content--left > p{
+  font-weight: bold;
+}
+.description--enterprise--content--left > ul li{
+  font-weight: bold;
+}
+.description--enterprise--content--right{
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding:2rem;
+}
+
+.name--enterprise{
+  color: #f9004d;
+  font-weight: bold;
+  font-size: 2.7rem;
+}
+.images{
+  width: 450px;
+  height: 300px;
+}
+.images img{
+  width: 100%;
+  height: 100%;
+}
+
+.footer{
+  width: 100%;
+  padding: 10px 170px;
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+}
+h4{
+  font-weight: 700;
+}
+.right{
+  width: 100%;
+  text-align: center;
+}
+.question--part{
+  width: 100%;
+  height: 50vh;
+  background-color:rgb(12, 52, 103);
+  padding: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background: url('https://img.freepik.com/photos-gratuite/abstrait-flou-interieur-salon_74190-6327.jpg?w=2000&t=st=1660257342~exp=1660257942~hmac=6a18e6836c79ef24cf64a749a3c07407c73efbef59d4ac93e6d55ae26f70eaba'); */
+  animation:fadeInRight 3s linear;
+}
+.question--part--content{
+  width: 90%;
+  height: 80%;
+  padding: 3rem;
+  text-align: center;
+}
+.question--part--content--box{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid coral;
+}
+.question--part--btn{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.btn--contact{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  background-color: coral;
+  margin-bottom: 10px;
+  padding: 10px;
   color: white;
+  cursor: pointer;
+  border-radius: 10px;
+  animation: pulse 2s infinite;
+}
+h3{
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #000;
+}
+.question{
+  font-size: 2rem;
+  color: #fff;
+  font-weight: bold;
 }
 
-.App-link {
-  color: #61dafb;
+h6{
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: coral;
+  text-decoration: underline;
+}
+.title{
+  color: #000;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+
