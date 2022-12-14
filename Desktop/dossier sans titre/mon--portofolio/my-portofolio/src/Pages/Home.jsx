@@ -19,7 +19,7 @@ export default function Home () {
                       <img src="3.JPG" alt="" />
                     </div>
                 </div>
-              <h1>DOUMBIA <span>FODE</span></h1>
+              <h1 className='name'>DOUMBIA <span>FODE</span></h1>
               <p>A Full Stack Developer & Informatician</p>
             </div>
         </div>

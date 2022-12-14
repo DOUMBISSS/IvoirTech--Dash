@@ -15,7 +15,6 @@ header{
   width: 20%;
   height: 100vh;
   background-color: #191919;
-  border: 1px solid coral;
 }
 .navbar--header{
   width: 100%;
@@ -48,6 +47,9 @@ header{
   font-size: 1.1rem;
   border-bottom: 1px solid gainsboro;
 }
+.li{
+  text-decoration: none;
+}
 .liste:hover{
   color: #f9004d;
 }
@@ -60,7 +62,7 @@ main{
 }
 .home--part{
   width: 80%;
-  border:1px solid coral;
+  /* border:1px solid coral; */
 }
 h1{
   font-size: 4rem;
@@ -79,7 +81,8 @@ h1{
   align-items: center;
   justify-content: center;
   animation: fadeInRight 1s linear;
-  background-image: url('https://images.unsplash.com/photo-1462899006636-339e08d1844e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGJ1aWxkaW5nfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60');
+  color: #fff;
+  /* background-image: url('https://images.unsplash.com/photo-1462899006636-339e08d1844e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGJ1aWxkaW5nfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60'); */
 }
 .slogan{
   width: 50%;
@@ -94,8 +97,8 @@ h1{
   justify-content: center;
 }
 .slogan--image--box{
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -125,7 +128,7 @@ span{
 	height: 365px;
 	width: 335px;
 	padding: 20px 35px;
-	background: #000;
+	background: #191919;
 	border-radius: 20px;
 	margin: 15px;
 	position: relative;
@@ -175,7 +178,7 @@ span{
 	cursor: pointer;
 }
 .main__part__services{
-  background-color: #191919;
+  background-color: black;
   width: 100%;
   height: 100vh;
   animation:fadeInRight 1s linear;
@@ -188,12 +191,13 @@ span{
 .btn__more:hover{
   background-color: #fff;
 }
-.description--enterprise{
+.description--author{
   width: 100%;
   height: 100vh;
   padding: 0px 5rem;
   display: flex;
-  background-color: rgb(238, 236, 236);
+  background-color:black;
+  color: #fff;
   animation:fadeInRight 1s linear;
 }
 .description--enterprise--content--left{
@@ -214,8 +218,7 @@ span{
   border-radius: 10px;
   padding:2rem;
 }
-
-.name--enterprise{
+.name--author{
   color: #f9004d;
   font-weight: bold;
   font-size: 2.7rem;
@@ -239,10 +242,6 @@ span{
 }
 h4{
   font-weight: 700;
-}
-.right{
-  width: 100%;
-  text-align: center;
 }
 .question--part{
   width: 100%;
@@ -309,6 +308,41 @@ h6{
 .title{
   color: #000;
   font-size: 2rem;
+  font-weight: bold;
+}
+.main__part__portfolio{
+  width: 100%;
+  background-color: #000;
+  height: 100vh;
+  padding: 0 1rem;
+  animation: fadeInRight 1s linear;
+}
+.last__project{
+  color: #fff;
+  font-weight: bold;
+  font-size: 2rem;
+}
+.card__content__block{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.cards{
+  width: 300px;
+  height: 200px;
+  margin: 0.7rem;
+  border-radius: 0.7rem;
+  border: 1px solid coral;
+}
+.cards img{
+  width: 100%;
+  height: 100%;
+  border-radius: 0.7rem;
+  border: 1px solid coral;
+}
+.name{
   font-weight: bold;
 }
 
