@@ -62,7 +62,6 @@ main{
 }
 .home--part{
   width: 80%;
-  /* border:1px solid coral; */
 }
 h1{
   font-size: 4rem;
@@ -73,20 +72,20 @@ h1{
 .main--part{
   width: 100%;
   height:100vh;
-  background-position: center;
+  /* background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover; */
   background-color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
   animation: fadeInRight 1s linear;
   color: #fff;
+  font-size: 1rem;
   /* background-image: url('https://images.unsplash.com/photo-1462899006636-339e08d1844e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGJ1aWxkaW5nfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60'); */
 }
 .slogan{
-  width: 50%;
-  height: 50%;
+  width: 100%;
   text-align: center;
   animation:fadeInRight 1s linear;
 }
@@ -344,6 +343,43 @@ h6{
 }
 .name{
   font-weight: bold;
+}
+.main--contact{
+  width: 100%;
+  padding: 1rem;
+  animation: fadeInRight 1s linear;
+  text-align: center;
+}
+.main--contact--header{
+  width: 100%;
+  /* text-align: center; */
+}
+.main--contact--content{
+  width: 100%;
+  /* border: 1px solid coral; */
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 1rem;
+}
+.card--contact{
+  width: 230px;
+  height: 180px;
+  /* border: 1px solid coral; */
+}
+.card--contact--header{
+  height: 20%;
+  font-size: 1.5rem;
+  color: #f9004d;
+  margin-bottom: 0.3rem ;
+}
+.contact--title{
+  color: rgb(172, 172, 226);
+}
+.contact--me{
+  font-size: 3rem;
+  font-weight: bold;
+  color: #f9004d;
 }
 
 

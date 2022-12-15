@@ -17,7 +17,7 @@ export default function Navbar () {
               <Link to='/about'className='li' ><li className='liste'> <i class="fa-solid fa-user"></i> About</li></Link>
               <Link to='/services' className='li'><li className='liste'><i class="fa-solid fa-bars"></i> Services</li></Link>
               <Link to='/portfolio' className='li'><li className='liste'><i class="fa-sharp fa-solid fa-briefcase"></i> Portfolio</li></Link>
-              <Link to='/services'className='li'><li className='liste'><i class="fa-solid fa-comments"></i> contact</li></Link>
+              <Link to='/contact'className='li'><li className='liste'><i class="fa-solid fa-comments"></i> contact</li></Link>
               </ul>
           </div>
     </header>

@@ -37,43 +37,72 @@ export default function Contact () {
             
     return (
     <div>
-        <Navbar />
-        <div className="container">
-          <div className="main--contact">
-            <h4>Remplissez notre formulaire de contact</h4>
-            <div className="main--contact--content">
-                <div className="main--contact--content--left">
-                  {/* <form onSubmit={SubmitForm}>
-                    <div className="mb-3">
-                      <label htmlFor="exampleInputEmail1" className="form-label">Noms & Prénoms</label>
-                      <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={name} onChange={(e) => setName(e.target.value)}/>
+          <main>
+        <Navbar/>
+           <div className='home--part'>
+              <div className="main--contact">
+              <div className='main--contact--header'>
+                  <h2 className='contact--me'>Contact Me</h2>
+                    <h4>Have you any questions ?</h4>
+                        <h5>I'm at your service</h5>
+                  </div>
+                  <div className='main--contact--content'>
+                      <div className='card--contact'>
+                        <div className='card--contact--header'>
+                        <i class="fa-solid fa-phone"></i>
+                        </div>
+                          <h4 className='contact--title'>Call Us</h4>
+                        <h5>+225 07 77 88 00 82</h5>
+                      </div>
+                      <div className='card--contact'>
+                      <div className='card--contact--header'>
+                       <i class="fa-solid fa-location-dot"></i>
+                       </div>
+                       <h4 className='contact--title'>Office</h4>
+                       <h5>Cocody Angré. Sicogi Rue l150</h5>
+                      </div>
+                      <div className='card--contact'>
+                      <div className='card--contact--header'>
+                        <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <h4 className='contact--title'>Email</h4>
+                        <h5>doumbia.fode@gmail.ci</h5>
+                      </div>
+                      <div className='card--contact'>
+                      <div className='card--contact--header'>
+                        <i class="fa-solid fa-globe"></i>
+                        </div>
+                        <h4 className='contact--title'>Website</h4>
+                        <h5>doumbisss.portfolio.com</h5>
+                      </div>
+                  </div>
+                  <div>
+                  <h2 className='contact--me'>Send me an email</h2>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="First name" aria-label="First name"/>
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
-                      <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="Last name" aria-label="Last name"/>
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="exampleFormControlInput1" className="form-label">Numéro de téléphone</label>
-                      <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Numero de telephone" value={number} onChange={(e) => setNumber(e.target.value)}/>
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="exampleFormControlTextarea1" className="form-label">Votre message</label>
-                      <textarea className="form-control" id="exampleFormControlTextarea1" rows="3" value={content} onChange={(e) => setContent(e.target.value)}></textarea>
-                    </div>
-                    <button type="submit" className="btn btn-primary">Envoyer</button>
-                  </form> */}
-                </div>
-                <div className="main--contact--content--right">
-                  <p>Aidez-nous à mieux comprendre vos besoins</p>
-                  <p>Adresse : Cocody Angré 7eme Tranche / Abidjan – Plateau – 01 BP 2076 Abidjan 01</p>
-                  <p>Tel : +225 07 77 88 00 82</p>
-                  <p> E-mail : sci@mayedo.ci</p>
-                  <p>site web : www.mayedo.ci</p>
-                </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"/>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  </div>
+                  <div class="d-grid gap-2 d-md-block">
+                    <button class="btn btn-primary" type="button">Envoyer</button>
+                  </div>
+                  </div>
             </div>
+
           </div>
-        </div>
-        <Footer/>
+         </main>
+         <Footer/>
     </div>
     );
 }
