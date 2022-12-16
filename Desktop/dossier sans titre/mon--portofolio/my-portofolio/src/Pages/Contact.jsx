@@ -66,7 +66,7 @@ export default function Contact () {
                         <i class="fa-solid fa-envelope"></i>
                         </div>
                         <h4 className='contact--title'>Email</h4>
-                        <h5>doumbia.fode@gmail.ci</h5>
+                        <h5>doumbia77fode@gmail.com</h5>
                       </div>
                       <div className='card--contact'>
                       <div className='card--contact--header'>
