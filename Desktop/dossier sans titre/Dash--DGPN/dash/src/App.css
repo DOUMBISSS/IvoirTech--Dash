@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;700&family=Bebas+Neue&family=Cairo:wght@300;700&family=Edu+VIC+WA+NT+Beginner&family=Montserrat:wght@100&family=Mouse+Memoirs&family=Orbitron&family=Oswald:wght@200&family=Play&family=Rajdhani:wght@300;700&family=Teko:wght@300;400&family=Titillium+Web:ital,wght@0,700;1,200&display=swap');
+*{
+  font-family: 'Cairo', sans-serif;
+  /* font-family: 'Edu VIC WA NT Beginner', cursive; */
+  /* font-family: 'Play', sans-serif; */
+  /* font-family: 'Titillium Web', sans-serif; */
+  /* font-family: 'Rajdhani', sans-serif; */
+  margin:0; padding:0;
+  box-sizing: border-box;
+  outline: none; border:none;
+  transition: all .2s linear;
+}
+:root {
+  --blue: #007bff;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #28a745;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+  --white: #fff;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --primary: #3f6ad8;
+  --secondary: #6c757d;
+  --success: #3ac47d;
+  --info: #16aaff;
+  --warning: #f7b924;
+  --danger: #d92550;
+  --light: #eeeeee;
+  --dark: #343a40;
+  --focus: #444054;
+  --alternate: #794c8a;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+}
+body{
+  animation: fadeInLeft 1s linear;
+}
+header{
+  width: 100%;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-bottom: 1px solid gainsboro;
+}
+
+.main--part{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profil{
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  border: 2px solid #031b4e;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+}
+.container--admin{
+  width: 100%;
+  height: 80px;
+  /* border: 1px solid coral; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container--admin--content{
+  width: 70%;
+  height: 70%;
+  /* border: 1px solid coral; */
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.profil--admin{
+  width: 20%;
+  height: 90%;
+  border-radius: 50%;
+}
+.profil--admin img{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.profil--name{
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #031b4e;
+}
+.sidebar{
+  width: 100%;
+  padding: 1rem;
+  border-right: 1px solid gainsboro;
+}
+.sidebar--item{
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid gainsboro;
+  list-style: none;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+.sidebar--item > p{
+  margin-bottom: 0;
+}
+.firstly{
+  width: 100%;
+  /* border: 1px solid coral; */
+  padding: 0.5rem;
+}
+.container--block--document{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.cards{
+  width: 240px;
+  height: 150px;
+  margin-bottom: 1rem;
+  border: 1px solid gainsboro;
+  border-radius: 0.7rem;
+  padding: 0.5rem;
+  box-shadow: 0 0 4px black;
+}
+.cards--header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cards:first-child{
+  background-color: aqua;
+}
+.cards:nth-child(2){
+  background-color: coral;
+}
+.cards:nth-child(3){
+  background-color: red;
+}
+.cards:nth-child(4){
+  background-color: yellow
+}
+/* .container__documents{
+  width: 100%;
+  height: 300px;
+  border: 1px solid gainsboro;
+  padding: 1rem;
+  border-radius: 1rem;
+} */
+.doc{
+  width: 100%;
+  height: 300px;
+  border: 1px solid gainsboro;
+  padding: 1rem;
+  border-radius: 1rem;
+}
