@@ -9,9 +9,8 @@ export default function Home () {
 
     return (
         <div>
-         <main>
-        <Navbar/>
-           <div className='home--part'>
+             <Navbar/>
+          <div className='home'>
           <div className="main--part">
             <div className="slogan">
                 <div className='slogan--image'>
@@ -25,9 +24,7 @@ export default function Home () {
             <p>I also make the website more & more interactive with web animations. A responsive design makes your website accessible to all users, regardless of their device.</p>
             </div>
         </div>
-
           </div>
-         </main>
          <Footer/>
       </div>
     )

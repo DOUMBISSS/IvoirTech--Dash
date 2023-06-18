@@ -8,7 +8,7 @@ export default function About () {
      <div>
        <main>
         <Navbar/>
-        <div className='home--part'>  
+        <div className='home'>  
         <div className="main__part__services">
             <h2 className='services--header'>Our Services</h2>  
         <div className="card__content">

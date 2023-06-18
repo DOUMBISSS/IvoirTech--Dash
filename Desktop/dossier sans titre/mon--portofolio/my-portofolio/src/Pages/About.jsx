@@ -6,9 +6,8 @@ export default function About () {
             
     return (
       <div>
-           <main>
         <Navbar/>
-        <div className='home--part'>  
+        <div className='home'>  
         <div className="description--author">
           <div className="description--enterprise--content--left">
             <h1 className="name--author">About Me</h1>
@@ -23,7 +22,6 @@ export default function About () {
             </div>
         </div>
           </div>
-         </main>
          <Footer/>
       </div>
     );

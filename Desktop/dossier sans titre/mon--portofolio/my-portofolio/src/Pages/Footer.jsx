@@ -6,7 +6,7 @@ function  Footer () {
 return (
     <div>
           <div className='footer'>
-            <p>Copyright © 2022,SCI MAYEDO </p>
+            <p>Copyright © 2022 </p>
         </div>
     </div>
 
