@@ -1,0 +1,93 @@
+import mongoose from 'mongoose';
+import validator from 'validator';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import {config} from '../../config.js'
+
+
+const salt=10;
+
+let userSchema = new mongoose.Schema({
+    name: {type :String,required: true,maxlength: 50},
+    prenom: {type :String,required: true,maxlength: 50},
+    address: {type :String,required: true,maxlength: 50},
+    numero: {type :String,required: true,maxlength: 50},
+    username: {type :String,required: true,maxlength: 50},
+    email: {type: String,required: true,unique: true,lowercase: true,validate: (value) => {
+          return validator.isEmail(value)}},
+      password: {type: String,required: true,unique: true},
+      password2: {type: String,required: true,unique: true},
+      person_id:[{type : mongoose.Types.ObjectId , ref: "Persons"}],
+      home_id:[{type : mongoose.Types.ObjectId ,ref:"Homes"}],
+      image:{type: String},
+      token:{type: String},
+      createdAt: {type: Date,default: Date.now},
+      date: { type: Date, default: Date.now },
+  });
+
+// Preuser
+  userSchema.pre('save',function(next){
+    var user=this;
+    
+    if(user.isModified('password')){
+        bcrypt.genSalt(salt,function(err,salt){
+            if(err)return next(err);
+
+            bcrypt.hash(user.password,salt,function(err,hash){
+                if(err) return next(err);
+                user.password=hash;
+                user.password2=hash;
+                next();
+            })
+
+        })
+    }
+    else{
+        next();
+    }
+});
+
+// function is for comparing the user password when user tries to login
+userSchema.methods.comparepassword=function(password,cb){
+  bcrypt.compare(password,this.password,function(err,isMatch){
+      if(err) return cb(next);
+      cb(null,isMatch);
+  });
+}
+
+//Next function is for generating a token when user logged in.
+userSchema.methods.generateToken=function(cb){
+  var user =this;
+  var token=jwt.sign(user._id.toHexString(),config.SECRET);
+
+  user.token=token;
+  user.save(function(err,user){
+      if(err) return cb(err);
+      cb(null,user);
+  })
+}
+
+// find by token
+userSchema.statics.findByToken=function(token,cb){
+  var user=this;
+
+  jwt.verify(token,confiq.SECRET,function(err,decode){
+      user.findOne({"_id": decode, "token":token},function(err,user){
+          if(err) return cb(err);
+          cb(null,user);
+      })
+  })
+};
+
+//delete token
+userSchema.methods.deleteToken=function(token,cb){
+  var user=this;
+
+  user.update({$unset : {token :1}},function(err,user){
+      if(err) return cb(err);
+      cb(null,user);
+  })
+}
+
+
+  export default mongoose.model('User', userSchema)
