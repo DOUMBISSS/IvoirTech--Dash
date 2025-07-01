@@ -1,146 +1,165 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { useUserContext } from '../contexts/UserContext';
-import Sidebar from '../Components/Sidebar';
 import Navbar from './Navbar';
-import { getAllPerson, getUser } from '../Redux/actions';
-import { Blocks } from 'react-loader-spinner';
 import Footer from './Footer';
 import NavbarList from './NavbarList';
 
-export default function Fournitures() {
-  const dispatch = useDispatch();
+export default function Fournisseurs() {
   const navigate = useNavigate();
-  const { user, clearUser } = useUserContext(); // Access context
-  const persons = useSelector((state) => state.peopleReducer.persons);
-  const users = useSelector((state) => state.peopleReducer.users);
+  const { user, clearUser } = useUserContext();
+  const [fournisseurs, setFournisseurs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15; // nombre d'éléments par page
+
   useEffect(() => {
     if (!user) {
-      navigate('/'); // Redirect if not logged in
+      navigate('/');
       return;
     }
 
-    const fetchData = async () => {
+    const fetchFournisseurs = async () => {
       try {
-        const personResponse = await fetch('https://mayedo.onrender.com/persons');
-        const userResponse = await fetch(`https://mayedo.onrender.com/users/${user?.id}`);
-
-        const personData = await personResponse.json();
-        const userData = await userResponse.json();
-
-        dispatch(getAllPerson(personData));
-        dispatch(getUser(userData));
+        const response = await fetch('http://localhost:8080/fournisseurs');
+        const data = await response.json();
+        setFournisseurs(data);
       } catch (error) {
-        console.error('Failed to fetch data:', error);
+        console.error('Erreur lors du chargement:', error);
       } finally {
         setLoading(false);
       }
     };
+    fetchFournisseurs();
+  }, [user, navigate]);
 
-    fetchData();
-  }, [user, dispatch, navigate]);
-
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
-  };
+  // Reset page quand la recherche change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
   const logoutHandler = () => {
     clearUser();
-    navigate('/login');
+    navigate('/');
   };
 
-  console.log(user)
+  // Filtrer les fournisseurs selon la recherche
+  const filteredFournisseurs = fournisseurs.filter((f) =>
+    f.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Pagination : calculer les fournisseurs à afficher sur la page courante
+  const totalPages = Math.ceil(filteredFournisseurs.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const fournisseursPagines = filteredFournisseurs.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  // Composant Pagination
+  const Pagination = () => {
+    if (totalPages <= 1) return null;
+
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <button
+          key={i}
+          onClick={() => setCurrentPage(i)}
+          style={{
+            margin: '0 5px',
+            padding: '5px 10px',
+            backgroundColor: i === currentPage ? '#8e44ad' : '#eee',
+            color: i === currentPage ? 'white' : '#333',
+            border: 'none',
+            borderRadius: 4,
+            cursor: 'pointer',
+          }}
+        >
+          {i}
+        </button>
+      );
+    }
+    return <div style={{ marginTop: 20, textAlign: 'center' }}>{pages}</div>;
+  };
 
   return (
-    <div>
-      <Navbar logoutHandler={logoutHandler} />
-      <NavbarList/>
-      <div className="containers">
-        <div className="dashboard">
-          <div className="left">
-          <div className="sidebar">
-                                        <h6>Categories</h6>
-                                        <div className="sidebar--item">
-                                            <Link to='/articles' className="link__sidebar"><p><i className="fa-solid fa-bars"></i> Articles</p></Link>
-                                        </div>
-                                        <div className="sidebar--item">
-                                            <Link to='/clients' className="link__sidebar"><p> <i className="fa-solid fa-user"></i> Clients</p></Link>
-                                        </div>
-                                        <div className="sidebar--item">
-                                            <Link to='/nos--fournisseurs' className="link__sidebar"><p> <i className="fa-solid fa-users"></i> Fournisseurs</p></Link>
-                                        </div>
-                                        <div className="sidebar--item">
-                                            <Link to='/stocks' className="link__sidebar"><p><i className="fa-solid fa-store"></i> Stocks</p></Link>
-                                        </div>
-                                    </div>
-                                
-          </div>
-          <div className="right">
-            <div className="firstly">
-              <h1 className='header__title'><i className="fa-solid fa-users"></i> Fournisseurs</h1>
-              <div className="container__paiement">
-              <div className="filter--container--content">
-              {/* <div class="form-floating col-12">
-                <input type="text" placeholder="Rechercher un locataire...." value={search} onChange={handleSearch}/>
-                </div> */}
-                <div className="col-md-3">
-                       {/* <label htmlFor="validationDefault02" className="form-label">Date de paiement</label> */}
-                       <input type="text" placeholder="Rechercher un fournisseur...." required value={search} onChange={handleSearch}/>
-                        </div>
-                        <button className="btn__devis" onClick={() => navigate('/Ajouter/new/client')}>
-                  <i className="fa-solid fa-plus"></i> Ajouter un nouveau fournisseur
-                </button>
-
-                        
-                </div>
-              </div>
-              {loading ? (
-                <Blocks
-                  visible={true}
-                  height="80"
-                  width="100%"
-                  ariaLabel="blocks-loading"
-                />
-              ) : (
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th className="coler">Nom</th>
-                      <th className="coler">Prénom(s)</th>
-                      <th className="coler">Contacts</th>
-                      <th className="coler">Adresse</th>
-                      <th className="coler">Details</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users.person_id?.filter((person) => {
-                      return search === '' || person.name.toLowerCase().includes(search.toLowerCase());
-                    }).map((person) => (
-                      <tr key={person._id}>
-                        <td className="coles">{person.name}</td>
-                        <td className="coles">{person.prenom}</td>
-                        <td className="coles">{person.tel}</td>
-                        <td className="coles">{person.address}</td>
-                        <td className="coles">
-                          <Link to={`/detailPerson/${person._id}`}>
-                            <button className="details__btn">Details</button>
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          </div>
+    <>
+          <Navbar logoutHandler={logoutHandler} />
+    <div className="dashboard-wrapper">
+      {/* <NavbarList /> */}
+      <div className="content animate-fadein">
+        <div className="page-header">
+          <h1>📦 Fournisseurs</h1>
         </div>
+                  <div className="action-bar">
+            <input
+              type="text" className='form-control'
+              placeholder="Recherche fournisseur..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <Link to="/ajouterFournisseur">
+              <button className="btn-primary">Ajouter</button>
+            </Link>
+          </div>
+
+        {loading ? (
+          <div className="loading">Chargement...</div>
+        ) : (
+          <>
+            <div className="table-container animate-scalein">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Adresse</th>
+                    <th>Ville</th>
+                    <th>Téléphone</th>
+                    <th>Détails</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {fournisseursPagines.map((fournisseur) => (
+                    <tr key={fournisseur._id} className="row-hover">
+                      <td>{fournisseur.name}</td>
+                      <td>{fournisseur.address}</td>
+                      <td>{fournisseur.ville}</td>
+                      <td>{fournisseur.number}</td>
+                      <td>
+                        <Link
+                          to={`/detailFournisseur/${fournisseur._id}`}
+                          className="btn btn-sm btn-info"
+                        >
+                          Voir
+                        </Link>
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-sm btn-info"
+                          onClick={() =>
+                            navigate(`/modifierFournisseur/${fournisseur._id}`)
+                          }
+                        >
+                          Modifier
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <Pagination />
+          </>
+        )}
       </div>
-      <Footer/>
+    
     </div>
+      <Footer />
+      </>
   );
 }

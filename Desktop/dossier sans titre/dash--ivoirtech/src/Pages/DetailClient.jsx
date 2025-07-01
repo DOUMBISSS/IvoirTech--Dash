@@ -1,136 +1,128 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../contexts/UserContext';
-import Sidebar from '../Components/Sidebar';
 import Navbar from './Navbar';
-import { getAllPerson, getUser } from '../Redux/actions';
-import { Blocks } from 'react-loader-spinner';
 import Footer from './Footer';
-import NavbarList from './NavbarList';
-
+import { Blocks } from 'react-loader-spinner';
+import { toast } from 'react-toastify';
 
 export default function DetailClient() {
-  const dispatch = useDispatch();
+  const { user, clearUser } = useUserContext();
   const navigate = useNavigate();
-  const { user, clearUser } = useUserContext(); // Access context
-  const persons = useSelector((state) => state.peopleReducer.persons);
-  const users = useSelector((state) => state.peopleReducer.users);
+  const { id } = useParams();
+
+  const [client, setClient] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
 
   useEffect(() => {
     if (!user) {
-      navigate('/'); // Redirect if not logged in
+      navigate('/');
       return;
     }
 
-    const fetchData = async () => {
+    const fetchClient = async () => {
       try {
-        const personResponse = await fetch('https://mayedo.onrender.com/persons');
-        const userResponse = await fetch(`https://mayedo.onrender.com/users/${user?.id}`);
+        const response = await fetch(`http://localhost:8080/clients/${id}`);
+        const data = await response.json();
 
-        const personData = await personResponse.json();
-        const userData = await userResponse.json();
-
-        dispatch(getAllPerson(personData));
-        dispatch(getUser(userData));
+        if (!response.ok) throw new Error(data.message || 'Client introuvable');
+        setClient(data);
       } catch (error) {
-        console.error('Failed to fetch data:', error);
+        console.error('Erreur chargement client :', error);
+        toast.error('Client introuvable ou erreur serveur');
+        setClient(null);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, [user, dispatch, navigate]);
-
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
-  };
+    fetchClient();
+  }, [id, user, navigate]);
 
   const logoutHandler = () => {
     clearUser();
-    navigate('/login');
+    navigate('/');
   };
 
-  console.log(user)
+  // Calcul total des montants
+  const totalAmount = client?.Commande?.reduce((acc, cmd) => {
+    const total = parseFloat(cmd.totalAmount || 0);
+    return acc + total;
+  }, 0) || 0;
 
   return (
-    <div>
+    <>
       <Navbar logoutHandler={logoutHandler} />
-      <NavbarList/>
-      <div className="containers">
-        <div className="dashboard">
-            <div className="firstly">
-              <div className="container__mld__client">
-                <div className='container__mld__client__info'>
-                <h1 className='header__title'><i className="fa-solid fa-users"></i> ALTERA</h1>
-                <p>Nom & Prenom Client : Altera Infrastructure</p>
-                <p>Tel : 0777880082</p>
-                <p>Adresse : Cocody Angré</p>
-                <p>Date de création : 11/05/2025</p>
-                <p>Montant Total Cmde. : 1 000 000 FCFA</p>
-                </div>
-                <div className='container__mld__client__info__btn'>
-                <button className='btn__print'> <i className="fa-solid fa-print"></i> Imprimer </button>
-                </div>
-              </div>
+    <div className="dashboard-wrapper">
+      <div className="content animate-fadein">
+        {loading ? (
+          <div className="loader">
+            <Blocks visible={true} height="80" width="100%" ariaLabel="blocks-loading" />
+          </div>
+        ) : client ? (
+          <>
+            <div className="client-header">
+              <h2><i className="fa-solid fa-user"></i> Détails client</h2>
+              <p><strong>Nom :</strong> {client.name} {client.surname}</p>
+              <p><strong>Adresse :</strong> {client.address}</p>
+              <p><strong>Ville :</strong> {client.ville}</p>
+              <p><strong>Téléphone :</strong> {client.number}</p>
+              <p><strong>Email :</strong> {client.email}</p>
+              <p><strong>Nombre de commandes :</strong> {client.Commande?.length || 0}</p>
+              <p><strong>Montant total :</strong> {totalAmount.toLocaleString()} FCFA</p>
+            </div>
 
-              <h4>Liste des commandes </h4>
-              {loading ? (
-                <Blocks
-                  visible={true}
-                  height="80"
-                  width="100%"
-                  ariaLabel="blocks-loading"
-                />
-              ) : (
-                <table className="table">
+            <h3 style={{ marginTop: '30px' }}>🧾 Historique des commandes</h3>
+
+            {client.Commande?.length > 0 ? (
+              <table className="table">
                 <thead>
                   <tr>
-                    {/* <th className="coler">Nom</th> */}
-                    <th className="coler">Dates</th>
-                    <th className="coler">Référence</th>
-                    {/* <th className="coler">Désignation</th> */}
-                    <th className="coler">N° Commande</th>
-                    {/* <th className="coler">Prix d'achat</th>
-                    <th className="coler">Prix de ventes</th> */}
-                    <th className="coler">Adressse</th>
-                    <th className="coler">Etat de la livraison</th>
-                    <th className="coler">Details</th>
-                    <th className="coler">Actions / Transformer</th>
+                    <th>Date</th>
+                    <th>N° Commande</th>
+                    <th>Panier</th>
+                    <th>Total</th>
+                    <th>Statut</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {users.person_id?.filter((person) => {
-                    return search === '' || person.name.toLowerCase().includes(search.toLowerCase());
-                  }).map((person) => (
-                    <tr key={person._id}>
-                      <td className="coles">{person.name}</td>
-                      <td className="coles">{person.prenom}</td>
-                      <td className="coles">{person.tel}</td>
-                      <td className="coles">{person.address}</td>
-                      <td className="coles">Livré</td>
-                      <td className="coles">
-                        <Link to='/detailCommande'>
-                          <button className="details__btn">Details</button>
-                        </Link>
+                  {client.Commande.map(cmd => (
+                    <tr key={cmd._id}>
+                      <td>{cmd.createdAt ? new Date(cmd.createdAt).toLocaleDateString() : '—'}</td>
+                      <td>{cmd.numeroCommande || '—'}</td>
+                      <td>
+                        <ul style={{ paddingLeft: '1rem' }}>
+                          {cmd.cart?.map((item, idx) => (
+                            <li key={idx}>
+                              {item.title} — {item.quantity} × {parseFloat(item.price).toLocaleString()} FCFA
+                            </li>
+                          ))}
+                        </ul>
                       </td>
-                      <td><i className="fa-solid fa-trash" id='trash'></i> 
-                      <Link to='/trasnformer'><i id='trash' className="fa-solid fa-layer-group"></i></Link>
-                      <i className="fa-solid fa-print" id='trash'></i>
-                      </td>
+                      <td>{parseFloat(cmd.totalAmount || 0).toLocaleString()} FCFA</td>
+                      <td>{cmd.status}</td>
                     </tr>
                   ))}
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <th colSpan="3">Total général</th>
+                    <th>{totalAmount.toLocaleString()} FCFA</th>
+                    <th></th>
+                  </tr>
+                </tfoot>
               </table>
-              )}
-            </div>
-        </div>
+            ) : (
+              <p style={{ marginTop: '1rem' }}>Aucune commande pour ce client.</p>
+            )}
+          </>
+        ) : (
+          <p style={{ marginTop: '2rem' }}>Client introuvable.</p>
+        )}
       </div>
-      <Footer/>
+     
     </div>
+     <Footer />
+     </>
   );
 }

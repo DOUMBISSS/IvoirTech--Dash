@@ -1,170 +1,198 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { useUserContext } from '../contexts/UserContext';
-import Sidebar from '../Components/Sidebar';
 import Navbar from './Navbar';
-import { getAllPerson, getUser } from '../Redux/actions';
-import { Blocks } from 'react-loader-spinner';
 import Footer from './Footer';
-import NavbarList from './NavbarList';
+import { Blocks } from 'react-loader-spinner';
+import { toast } from 'react-toastify';
+
+const backend = 'http://localhost:8080';
 
 export default function Clients() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, clearUser } = useUserContext(); // Access context
-  const persons = useSelector((state) => state.peopleReducer.persons);
-  const users = useSelector((state) => state.peopleReducer.users);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const { user, clearUser } = useUserContext();
 
+  const [clients, setClients]       = useState([]);     // liste des clients
+  const [ordersMap, setOrdersMap]   = useState({});     // {clientId: nbCmd}
+  const [loading, setLoading]       = useState(true);   // loader global
+  const [search, setSearch]         = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  /* ──────────────────────────────────────────────────────────
+     1)  Récupération clients  +  nombre de commandes
+  ────────────────────────────────────────────────────────── */
   useEffect(() => {
     if (!user) {
-      navigate('/'); // Redirect if not logged in
+      navigate('/');
       return;
     }
 
-    const fetchData = async () => {
+    (async () => {
+      const adminId = user?._id || user?.id;
+      if (!adminId) {
+        toast.error('adminId manquant, veuillez vous reconnecter');
+        setLoading(false);
+        return;
+      }
+
       try {
-        const personResponse = await fetch('https://mayedo.onrender.com/persons');
-        const userResponse = await fetch(`https://mayedo.onrender.com/users/${user?.id}`);
+        /* --- A.  Clients --- */
+        const resClients  = await fetch(`${backend}/clients?adminId=${adminId}`);
+        const dataClients = await resClients.json();
+        if (!resClients.ok) throw new Error(dataClients.message || 'Erreur clients');
+        setClients(dataClients || []);
 
-        const personData = await personResponse.json();
-        const userData = await userResponse.json();
+        /* --- B.  Commandes --- */
+        const resCmds  = await fetch(`${backend}/commandes?adminId=${adminId}`);
+        const dataCmds = await resCmds.json();
+        if (!resCmds.ok) throw new Error(dataCmds.message || 'Erreur commandes');
 
-        dispatch(getAllPerson(personData));
-        dispatch(getUser(userData));
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
+        // Agrège les commandes par clientId
+        const map = {};
+        (dataCmds || []).forEach((cmd) => {
+          const id = cmd.clientId || cmd.client?._id;
+          if (!id) return;
+          map[id] = (map[id] || 0) + 1;
+        });
+        setOrdersMap(map);
+      } catch (err) {
+        console.error('Erreur chargement :', err);
+        toast.error('Erreur lors du chargement des données.');
+        setClients([]);
+        setOrdersMap({});
       } finally {
         setLoading(false);
       }
-    };
+    })();
+  }, [user, navigate]);
 
-    fetchData();
-  }, [user, dispatch, navigate]);
-
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
-  };
+  /* ──────────────────────────────────────────────────────────
+     2)  Recherche & pagination
+  ────────────────────────────────────────────────────────── */
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
   const logoutHandler = () => {
     clearUser();
-    navigate('/login');
+    navigate('/');
   };
 
-  console.log(user)
+  const filteredClients = clients.filter((c) =>
+    `${c.name || ''} ${c.surname || ''}`.toLowerCase().includes(search.toLowerCase())
+  );
 
+  const totalPages   = Math.max(1, Math.ceil(filteredClients.length / itemsPerPage));
+  const startIndex   = (currentPage - 1) * itemsPerPage;
+  const clientsPage  = filteredClients.slice(startIndex, startIndex + itemsPerPage);
+
+  /* ──────────────────────────────────────────────────────────
+     3)  Composant pagination
+  ────────────────────────────────────────────────────────── */
+  const Pagination = () => {
+    if (totalPages <= 1) return null;
+    return (
+      <div style={{ marginTop: 20, textAlign: 'center' }}>
+        {[...Array(totalPages)].map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentPage(i + 1)}
+            style={{
+              margin: '0 5px',
+              padding: '5px 10px',
+              backgroundColor: i + 1 === currentPage ? '#8e44ad' : '#eee',
+              color:             i + 1 === currentPage ? '#fff'   : '#333',
+              border: 'none',
+              borderRadius: 4,
+              cursor: 'pointer',
+            }}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
+    );
+  };
+
+  /* ──────────────────────────────────────────────────────────
+     4)  Rendu
+  ────────────────────────────────────────────────────────── */
   return (
-    <div>
+    <>
       <Navbar logoutHandler={logoutHandler} />
-      <NavbarList/>
-      <div className="containers">
-        <div className="dashboard">
-          <div className="left">
-          <div className="sidebar">
-                                        <h6>Categories</h6>
-                                        <div className="sidebar--item">
-                                            <Link to='/articles' className="link__sidebar"><p><i className="fa-solid fa-bars"></i> Articles</p></Link>
-                                        </div>
-                                        <div className="sidebar--item">
-                                            <Link to='/clients' className="link__sidebar"><p> <i className="fa-solid fa-user"></i> Clients</p></Link>
-                                        </div>
-                                        <div className="sidebar--item">
-                                            <Link to='/nos--fournisseurs' className="link__sidebar"><p> <i className="fa-solid fa-users"></i> Fournisseurs</p></Link>
-                                        </div>
-                                        <div className="sidebar--item">
-                                            <Link to='/stocks' className="link__sidebar"><p><i className="fa-solid fa-store"></i> Stocks</p></Link>
-                                        </div>
-                                    </div>
-                                
+
+      <div className="dashboard-wrapper">
+        <div className="content animate-fadein">
+          <div className="header">
+            <h1>👥 Clients avec commandes</h1>
+            <div className="search-bar">
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Rechercher un client..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
           </div>
-          <div className="right">
-            <div className="firstly">
-              <h1 className='header__title'><i className="fa-solid fa-users"></i> Clients</h1>
-              <div className="container__mld">
-              <div className="filter--container--content">
-                {/* <div className="col-md-2">
-                <select class="form-select form-select-sm" aria-label="Small select example">
-                <option selected>Categories</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-              </div> */}
-              {/* <div className="col-md-2">
-                <select class="form-select form-select-sm" aria-label="Small select example">
-                <option selected>Articles</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-              </div> */}
 
-              {/* <div className="col-md-2">
-                <select class="form-select form-select-sm" aria-label="Small select example">
-                <option selected>Caracteristique</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-              </div> */}
-              
-              
-              <div className="col-md-3">
-                       <input type="text" placeholder="Rechercher un client...." required value={search} onChange={handleSearch}/>
-                        </div>
-                
-                        <button className="btn__devis" onClick={() => navigate('/Ajouter/new/client')}>
-                  <i className="fa-solid fa-plus"></i> Ajouter un nouveau client
-                </button>
-
-              </div>
-  
-              </div>
-              {loading ? (
-                <Blocks
-                  visible={true}
-                  height="80"
-                  width="100%"
-                  ariaLabel="blocks-loading"
-                />
-              ) : (
-                <table className="table">
+          {loading ? (
+            <div className="loader">
+              <Blocks visible height="80" width="100" ariaLabel="blocks-loading" />
+            </div>
+          ) : (
+            <>
+              <div className="table-container animate-scalein">
+                <table>
                   <thead>
                     <tr>
-                      <th className="coler">Nom</th>
-                      <th className="coler">Prénom(s)</th>
-                      <th className="coler">Contacts</th>
-                      <th className="coler">Adresse</th>
-                      <th className="coler">Details</th>
+                      <th>Nom</th>
+                      <th>Adresse</th>
+                      <th>Ville</th>
+                      <th>Téléphone</th>
+                      <th>Email</th>
+                      <th>Commandes</th>
+                      <th>Détails</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {users.person_id?.filter((person) => {
-                      return search === '' || person.name.toLowerCase().includes(search.toLowerCase());
-                    }).map((person) => (
-                      <tr key={person._id}>
-                        <td className="coles">{person.name}</td>
-                        <td className="coles">{person.prenom}</td>
-                        <td className="coles">{person.tel}</td>
-                        <td className="coles">{person.address}</td>
-                        <td className="coles">
-                          <Link to='/detailClient'>
-                            <button className="details__btn">Details</button>
-                          </Link>
+                    {clientsPage.length === 0 ? (
+                      <tr>
+                        <td colSpan="7" className="text-center">
+                          Aucun client trouvé.
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      clientsPage.map((c) => (
+                        <tr key={c._id} className="row-hover">
+                          <td>{c.name} {c.surname}</td>
+                          <td>{c.address}</td>
+                          <td>{c.ville}</td>
+                          <td>{c.number}</td>
+                          <td>{c.email || '-'}</td>
+                          <td>{ordersMap[c._id] || 0} commande(s)</td>
+                          <td>
+                            <Link
+                              to={`/detailClient/${c._id}`}
+                              className="btn btn-sm btn-info"
+                            >
+                              Détails
+                            </Link>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
-              )}
-            </div>
-          </div>
+              </div>
+              <Pagination />
+            </>
+          )}
         </div>
       </div>
-      <Footer/>
-    </div>
+
+      <Footer />
+    </>
   );
 }

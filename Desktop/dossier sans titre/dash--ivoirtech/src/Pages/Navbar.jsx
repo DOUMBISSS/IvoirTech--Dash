@@ -1,114 +1,149 @@
-import { Link ,useNavigate} from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useUserContext } from '../contexts/UserContext';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+export default function Navbar() {
+  const { user, logout } = useUserContext();
+  const navigate = useNavigate();
+  const [notifCount, setNotifCount] = useState(0);
+  const prevNotifCount = useRef(0);
+  const audioRef = useRef(null);
 
-
-export default function Navbar (){
-  const [toogleHelp,setToogle]=useState(false)
-  const [sidebar,setSidebar]=useState(false)
-  const [user,setUser] = useState("");
+  const logoutHandler = () => {
+    logout();
+    navigate('/');
+  };
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user"))) 
-    }, [])
+    let interval;
+    const fetchNotifications = async () => {
+      if (!user?._id) return;
 
+      try {
+        const res = await fetch(`http://localhost:8080/commandes?adminId=${user._id}`);
+        const data = await res.json();
+        const commandesAtraiter = data.filter(c =>
+          c.status === 'en attente' || c.status === 'à livrer'
+        );
+        const newCount = commandesAtraiter.length;
 
-  const sidebarMenu = () =>{
-    setSidebar(true)
-  }
+        // Détection d'une nouvelle commande
+        if (newCount > prevNotifCount.current) {
+          toast.info("🆕 Nouvelle commande à traiter !");
+          if (audioRef.current) {
+            audioRef.current.play().catch(e => console.error("Audio error", e));
+          }
+        }
 
-  const sidebarToogle = () =>{
-    setToogle(true)
-  }
-  
-  const closeNav = () =>{
-    setSidebar(false)
-  }
+        prevNotifCount.current = newCount;
+        setNotifCount(newCount);
+      } catch (err) {
+        console.error("Erreur notification commandes :", err);
+      }
+    };
 
-  const Help = () =>{
-    setToogle(true)
-  }
-  const display = ()=>{
-    setToogle(false)
-  }
+    fetchNotifications();
+    interval = setInterval(fetchNotifications, 300000); // toutes les 60 sec --5min(300 000)
 
-    const navigate = useNavigate();
-  
-        
+    return () => clearInterval(interval);
+  }, [user]);
 
-
-    const logoutHandler =()=>{
-      localStorage.clear();
-      
-      navigate('/');
-  
-    }
-    // console.log(user)
-  
-    return(
-        <div>
-            <header>
-           <div className="navbar--left">
-                {/* <div className="navbagr--menu">
-                <i className="fa-solid fa-bars" onClick={sidebarToogle}></i>
-                </div> */}
-                      <div className="navbar--left--box">
-                    <Link to="/Accueil"> <img src={`${process.env.PUBLIC_URL}/lo.png`} alt=''/></Link>
-                </div>
-           </div>
-           <div className="navbar--center">
-                {/* <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form> */}
-
-             {/* <div className="user--name--box">
-                            <h6 className="user--name"><i className="fa-solid fa-user"></i> {user.username}</h6>
-                            <h6 className='user--email'> {user.email}</h6>
-                        </div> */}
-                      
-           </div>
-           <div className="navbar--right">
-                    {/* <button type="button" class="btn btn-primary">
-                        Notifications <span class="badge text-bg-secondary">4</span>
-                        </button> */}
-                         <button className="btn__help" onClick={Help}> <i class="fa-solid fa-circle-question"></i> Aide </button>
-       {user ? (
-            <>
-              <span><i className="fa-solid fa-user"></i> {user.email}</span>
-              <button onClick={logoutHandler} className="btn__logout">
-                Logout
-              </button>
-            </>
-          ) : (
-            <Link to="/login" className="btn__login">
-              Login
-            </Link>
-          )}
-                         {/* <button className="btn__log" onClick={logout}> <i class="fa-solid fa-right-from-bracket"></i> Deconnexion</button> */}
-           </div>
-            </header>
-            {/* <div className="navbar__display">
-              <div className="navbar__display__left">
-                    <p onClick={sidebarMenu}><i class="fa-solid fa-bars"></i> Menu</p>
-              </div>
-              <div className="navbar__display__center">
-                      <div className="navbar__display__center__logo">
-                      <Link to="/Accueil"> <img src={`${process.env.PUBLIC_URL}/27.PNG`} alt=''/></Link>
-                      </div>
-              </div>
-              <div className="navbar__display__right">
-                <button className="btn__help" onClick={sidebarToogle}> <i class="fa-solid fa-circle-question"></i> Aide </button>
-              </div>
-
-            </div> */}
-           
-
-                          
-
-              
+  return (
+    <div className="navbar-global">
+      <header className="navbar-top">
+        <div className="navbar-left">
+          <Link to="/accueil">
+            <img
+              src={`${process.env.PUBLIC_URL}/logo df.png`}
+              alt="Logo"
+              className="navbar-logo"
+            />
+          </Link>
         </div>
-    )
-}
 
-// 
+        <div className="navbar-center">
+          <h2 className="navbar-title"> D&F Manager</h2>
+        </div>
+
+        <div className="navbar-right">
+          {user ? (
+            <div className="navbar-user-info">
+              <img
+                src={
+                  user.photo
+                    ? `http://localhost:8080${user.photo}`
+                    : "https://i.pravatar.cc/40?img=3"
+                }
+                alt="profil"
+                className="user-avatar"
+              />
+              <span className="username">
+                {user.nom || user.email || "Utilisateur"}
+              </span>
+
+              <Link to="/Mon--profil" className="btn-profil">
+                <i className="fa-solid fa-user-circle"></i> Profil
+              </Link>
+
+              <button onClick={logoutHandler} className="btn-logout">
+                <i className="fa-solid fa-right-from-bracket"></i> Déconnexion
+              </button>
+            </div>
+          ) : (
+            <Link to="/" className="btn-login">Login</Link>
+          )}
+        </div>
+      </header>
+
+      {/* Menu Navigation Principal */}
+      <nav className="navbar-menu">
+        <NavLink to="/articles" className={({ isActive }) => isActive ? 'active' : ''}>
+          <i className="fa-solid fa-building"></i> Structures
+        </NavLink>
+
+        <NavLink to="/traitement" className={({ isActive }) => isActive ? 'active notification-link' : 'notification-link'}>
+          <i className="fa-solid fa-cart-shopping"></i> Mes Commandes
+          {notifCount > 0 && (
+            <span className="notif-badge">{notifCount}</span>
+          )}
+        </NavLink>
+
+        <NavLink to="/clients" className={({ isActive }) => isActive ? 'active' : ''}>
+          <i className="fa-solid fa-users"></i> Clients
+        </NavLink>
+
+        <NavLink to="/nos--fournisseurs" className={({ isActive }) => isActive ? 'active' : ''}>
+          <i className="fa-solid fa-truck"></i> Fournisseurs
+        </NavLink>
+
+        <NavLink to="/Mes--statistiques" className={({ isActive }) => isActive ? 'active' : ''}>
+          <i className="fa-solid fa-chart-line"></i> Statistiques
+        </NavLink>
+      </nav>
+
+      <audio ref={audioRef} src="/notification.mp3" preload="auto" />
+
+      <ToastContainer position="top-right" />
+      
+      <style jsx="true">{`
+        .notification-link {
+          position: relative;
+        }
+
+        .notif-badge {
+          position: absolute;
+          top: -8px;
+          right: -10px;
+          background-color: red;
+          color: white;
+          border-radius: 50%;
+          padding: 2px 6px;
+          font-size: 0.75rem;
+          font-weight: bold;
+        }
+      `}</style>
+    </div>
+  );
+}

@@ -1,0 +1,31 @@
+async function createNewProduct() {
+  try {
+    const newProduct = await Product.create({
+      title: 'Smartphone Samsung Galaxy S23 Ultra',
+      reference: 'SM-G998B-001',
+      label: 'Samsung',
+      categorie: 'Smartphone',
+      prixAchat: 600000,
+      prixVente: 750000,
+      price: 720000,
+      description: 'Smartphone haut de gamme avec écran Dynamic AMOLED 2X, appareil photo 200MP, et processeur Snapdragon 8 Gen 2.',
+      groupe: 'Smartphone',
+      specifications: 'Snapdragon 8 Gen 2, 12Go RAM, 256Go stockage, batterie 5000mAh, Android 13',
+      img: '1718733484455-samsung-s23-ultra.png', // nom fichier image principale
+      images: [
+        '1718733484456-samsung-s23-ultra-1.png',
+        '1718733484457-samsung-s23-ultra-2.png'
+      ],
+      adminId: '68533658c43d79e6d470e503' // l’id de l’admin connecté
+    });
+
+    console.log('Produit créé avec succès:', newProduct);
+  } catch (error) {
+    console.error('Erreur création produit:', error);
+  }
+}
+
+createNewProduct();																					creer 100 produits differents ayant pour groupe  "Electronique",
+    "Informatiques",
+    "Jeux Vidéo & Consoles",
+    "Smartphone", et des categories pour ma base de donnée
