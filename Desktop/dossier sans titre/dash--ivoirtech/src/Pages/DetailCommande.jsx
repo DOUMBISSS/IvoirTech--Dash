@@ -235,27 +235,46 @@ export default function DetailCommande() {
               <th style={{ textAlign:'center', padding:8 }}>Total</th>
             </tr>
           </thead>
-          <tbody>
-            {commande.cart.map((item, idx) => {
-              const p      = item.productId;
-              const imgUrl = p.img?.startsWith('http') ? p.img : `https://ivoirtech-innov.onrender.com/uploads/${p.img}`;
-              return (
-                <tr key={idx} style={{ background: idx%2 ? '#f7f9f9' : '#fff' }}>
-                  <td style={{ padding:10 }}>{p.reference || '—'}</td>
-                  <td style={{ padding:10 }}>{p.title}</td>
-                  <td style={{ textAlign:'center' }}>
-                    <img src={imgUrl} alt={p.title}
-                         style={{ width:60, height:60, objectFit:'cover', borderRadius:6 }} />
-                  </td>
-                  <td style={{ textAlign:'center' }}>{item.quantity}</td>
-                  <td style={{ textAlign:'center' }}>{formatPrice(p.price)}</td>
-                  <td style={{ textAlign:'center', fontWeight:'bold' }}>
-                    {formatPrice(p.price * item.quantity)}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
+         <tbody>
+  {commande.cart.map((item, idx) => {
+    // si le produit est manquant, on affiche une ligne d’avertissement
+    if (!item.productId) {
+      return (
+        <tr key={idx} style={{ background: idx % 2 ? '#f7f9f9' : '#fff' }}>
+          <td colSpan={6} style={{ padding: 10, color: '#dc3545', fontStyle: 'italic' }}>
+            Ce produit n’existe plus dans la base ou n’a pas été chargé.
+          </td>
+        </tr>
+      );
+    }
+
+    const p = item.productId;
+    const imgUrl = p.img
+      ? p.img.startsWith('http')
+        ? p.img
+        : `https://ivoirtech-innov.onrender.com/uploads/${p.img}`
+      : '/placeholder.jpg';
+
+    return (
+      <tr key={idx} style={{ background: idx % 2 ? '#f7f9f9' : '#fff' }}>
+        <td style={{ padding: 10 }}>{p.reference || '—'}</td>
+        <td style={{ padding: 10 }}>{p.title}</td>
+        <td style={{ textAlign: 'center' }}>
+          <img
+            src={imgUrl}
+            alt={p.title}
+            style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 6 }}
+          />
+        </td>
+        <td style={{ textAlign: 'center' }}>{item.quantity}</td>
+        <td style={{ textAlign: 'center' }}>{formatPrice(p.price)}</td>
+        <td style={{ textAlign: 'center', fontWeight: 'bold' }}>
+          {formatPrice(p.price * item.quantity)}
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
           <tfoot>
             <tr style={{ background:'#e1f5e4' }}>
               <td colSpan={6} style={{ textAlign:'center', fontWeight:700, padding:12 }}>
