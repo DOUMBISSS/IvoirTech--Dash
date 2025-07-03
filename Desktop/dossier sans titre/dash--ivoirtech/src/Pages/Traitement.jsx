@@ -29,7 +29,7 @@ export default function Traitement() {
       }
 
       try {
-        const res = await fetch(`http://localhost:8080/commandes?adminId=${adminId}`);
+        const res = await fetch(`https://ivoirtech-innov.onrender.com/commandes?adminId=${adminId}`);
         const data = await res.json();
 
         if (!res.ok) throw new Error(data.message || "Erreur serveur");
@@ -64,7 +64,7 @@ export default function Traitement() {
 
   const handleStatusUpdate = async (id, newStatus) => {
     try {
-      await axios.put(`http://localhost:8080/commandes/${id}/status`, { status: newStatus });
+      await axios.put(`https://ivoirtech-innov.onrender.com/commandes/${id}/status`, { status: newStatus });
       toast.success("Statut mis à jour !");
       setCommandes((prev) =>
         prev.map((cmd) => (cmd._id === id ? { ...cmd, status: newStatus } : cmd))

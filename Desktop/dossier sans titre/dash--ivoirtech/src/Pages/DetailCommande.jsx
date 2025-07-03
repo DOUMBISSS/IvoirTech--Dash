@@ -26,7 +26,7 @@ export default function DetailCommande() {
     setMessage('');
 
     try {
-      const res = await fetch(`http://localhost:8080/commandes/${id}`, {
+      const res = await fetch(`https://ivoirtech-innov.onrender.com/commandes/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       if (!res.ok) {
@@ -67,7 +67,7 @@ export default function DetailCommande() {
     setLoadingInvoice(true);
     setMessage('');
     try {
-      const res = await fetch(`http://localhost:8080/commandes/${id}/facture`, {
+      const res = await fetch(`https://ivoirtech-innov.onrender.com/commandes/${id}/facture`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${user.token}`, Accept: 'application/pdf' },
       });
@@ -97,7 +97,7 @@ export default function DetailCommande() {
     setLoadingEmail(true);
     setMessage('');
     try {
-      const res = await fetch(`http://localhost:8080/commandes/${id}/send-invoice`, {
+      const res = await fetch(`https://ivoirtech-innov.onrender.com/commandes/${id}/send-invoice`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${user.token}`, 'Content-Type': 'application/json' },
       });
@@ -114,7 +114,7 @@ export default function DetailCommande() {
     setLoadingPayment(true);
     setMessage('');
     try {
-      const res = await fetch(`http://localhost:8080/commandes/${id}/payer`, {
+      const res = await fetch(`https://ivoirtech-innov.onrender.com/commandes/${id}/payer`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${user.token}` },
       });
@@ -238,7 +238,7 @@ export default function DetailCommande() {
           <tbody>
             {commande.cart.map((item, idx) => {
               const p      = item.productId;
-              const imgUrl = p.img?.startsWith('http') ? p.img : `http://localhost:8080/uploads/${p.img}`;
+              const imgUrl = p.img?.startsWith('http') ? p.img : `https://ivoirtech-innov.onrender.com/uploads/${p.img}`;
               return (
                 <tr key={idx} style={{ background: idx%2 ? '#f7f9f9' : '#fff' }}>
                   <td style={{ padding:10 }}>{p.reference || '—'}</td>

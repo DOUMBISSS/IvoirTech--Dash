@@ -102,7 +102,7 @@ export default function AddArticles() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('http://localhost:8080/fournisseurs');
+        const res = await axios.get('https://ivoirtech-innov.onrender.com/fournisseurs');
         setFournisseurs(res.data || []);
       } catch (err) {
         console.error(err);
@@ -209,7 +209,7 @@ export default function AddArticles() {
     data.append('fournisseur', formData.fournisseurId);
 
     try {
-      await axios.post('http://localhost:8080/Newproducts', data, {
+      await axios.post('https://ivoirtech-innov.onrender.com/Newproducts', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       toast.success('Produit ajouté avec succès !');

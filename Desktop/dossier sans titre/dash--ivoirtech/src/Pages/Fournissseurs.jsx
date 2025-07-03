@@ -24,7 +24,7 @@ export default function Fournisseurs() {
 
     const fetchFournisseurs = async () => {
       try {
-        const response = await fetch('http://localhost:8080/fournisseurs');
+        const response = await fetch('https://ivoirtech-innov.onrender.com/fournisseurs');
         const data = await response.json();
         setFournisseurs(data);
       } catch (error) {

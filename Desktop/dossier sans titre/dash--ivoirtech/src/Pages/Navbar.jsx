@@ -22,7 +22,7 @@ export default function Navbar() {
       if (!user?._id) return;
 
       try {
-        const res = await fetch(`http://localhost:8080/commandes?adminId=${user._id}`);
+        const res = await fetch(`https://ivoirtech-innov.onrender.com/commandes?adminId=${user._id}`);
         const data = await res.json();
         const commandesAtraiter = data.filter(c =>
           c.status === 'en attente' || c.status === 'à livrer'
@@ -73,7 +73,7 @@ export default function Navbar() {
               <img
                 src={
                   user.photo
-                    ? `http://localhost:8080${user.photo}`
+                    ? `https://ivoirtech-innov.onrender.com${user.photo}`
                     : "https://i.pravatar.cc/40?img=3"
                 }
                 alt="profil"

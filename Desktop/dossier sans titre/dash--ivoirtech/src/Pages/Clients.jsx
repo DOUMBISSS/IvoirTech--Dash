@@ -6,7 +6,7 @@ import Footer from './Footer';
 import { Blocks } from 'react-loader-spinner';
 import { toast } from 'react-toastify';
 
-const backend = 'http://localhost:8080';
+const backend = 'https://ivoirtech-innov.onrender.com';
 
 export default function Clients() {
   const navigate = useNavigate();

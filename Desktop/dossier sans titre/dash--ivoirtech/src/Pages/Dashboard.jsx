@@ -59,19 +59,19 @@ useEffect(() => {
       }
 
       if (mode === 'client') {
-        const resC = await fetch(`http://localhost:8080/commandes/statistiques?${params}`);
+        const resC = await fetch(`https://ivoirtech-innov.onrender.com/commandes/statistiques?${params}`);
         const dataC = await resC.json();
         setStatsClient(dataC);
         setStatsFournisseur(null);
         setStatsProduits(null);
       } else if (mode === 'fournisseur') {
-        const resF = await fetch(`http://localhost:8080/fournisseurs/statistiques?${params}`);
+        const resF = await fetch(`https://ivoirtech-innov.onrender.com/fournisseurs/statistiques?${params}`);
         const dataF = await resF.json();
         setStatsFournisseur(dataF);
         setStatsClient(null);
         setStatsProduits(null);
       } else if (mode === 'produits') {
-        const resP = await fetch(`http://localhost:8080/produits/statistiques?${params}`);
+        const resP = await fetch(`https://ivoirtech-innov.onrender.com/produits/statistiques?${params}`);
         const dataP = await resP.json();
         setStatsProduits(dataP);
         setStatsClient(null);

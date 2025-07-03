@@ -32,7 +32,7 @@ export default function Articles() {
       }
 
       try {
-        const res = await fetch(`http://localhost:8080/admin/${adminId}`);
+        const res = await fetch(`https://ivoirtech-innov.onrender.com/admin/${adminId}`);
         const data = await res.json();
 
         if (!res.ok) throw new Error(data.message || "Erreur serveur");
@@ -181,7 +181,7 @@ export default function Articles() {
                         <tr key={item._id}>
                           <td>
                             <img
-                              src={`http://localhost:8080/uploads/${item.img}`}
+                              src={`https://ivoirtech-innov.onrender.com/uploads/${item.img}`}
                               alt={item.title}
                               style={{ width: 60, height: 60, objectFit: "cover" }}
                             />

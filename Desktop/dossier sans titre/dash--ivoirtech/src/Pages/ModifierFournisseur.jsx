@@ -24,14 +24,14 @@ export default function ModifierFournisseur() {
         if (!id || !user?._id) throw new Error("ID manquant");
 
         // Charger les produits de l'admin connecté
-        const res = await fetch(`http://localhost:8080/admin/${user._id}`);
+        const res = await fetch(`https://ivoirtech-innov.onrender.com/admin/${user._id}`);
         if (!res.ok) throw new Error("Erreur récupération admin");
         const adminData = await res.json();
         const productData = adminData.products || [];
         setProducts(productData);
 
         // Charger le fournisseur
-        const fournisseurRes = await fetch(`http://localhost:8080/fournisseur/${id}`);
+        const fournisseurRes = await fetch(`https://ivoirtech-innov.onrender.com/fournisseur/${id}`);
         if (!fournisseurRes.ok) throw new Error("Fournisseur introuvable");
         const fournisseurData = await fournisseurRes.json();
 
@@ -96,7 +96,7 @@ export default function ModifierFournisseur() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:8080/fournisseur/${id}`, {
+      const res = await fetch(`https://ivoirtech-innov.onrender.com/fournisseur/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)

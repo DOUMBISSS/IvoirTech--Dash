@@ -14,7 +14,7 @@ const DetailArticle = () => {
   const [allImages,      setAllImages]      = useState([]);
   const [loading,        setLoading]        = useState(true);
 
-  const backendURL = 'http://localhost:8080';
+  const backendURL = 'https://ivoirtech-innov.onrender.com';
 
   /* ----------- chargement du produit ----------- */
   useEffect(() => {

@@ -25,7 +25,7 @@ export default function Home() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/login", {
+      const response = await fetch("https://ivoirtech-innov.onrender.com/login", {
         method: "POST",
         headers: { 'Content-Type': "application/json" },
         body: JSON.stringify(loginData),
@@ -59,7 +59,7 @@ export default function Home() {
         if (value) formData.append(key, value);
       });
 
-      const response = await fetch("http://localhost:8080/admin/register", {
+      const response = await fetch("https://ivoirtech-innov.onrender.com/admin/register", {
         method: "POST",
         body: formData,
       });

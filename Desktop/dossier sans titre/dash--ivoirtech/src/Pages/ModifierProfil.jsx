@@ -36,7 +36,7 @@ export default function ModifierProfil() {
         password: "",
         confirmPassword: "",
       });
-      setPhotoPreview(user.photo ? `http://localhost:8080${user.photo}` : null);
+      setPhotoPreview(user.photo ? `https://ivoirtech-innov.onrender.com${user.photo}` : null);
       setPhotoFile(null);
       setPhotoDeleted(false);
     }
@@ -83,7 +83,7 @@ export default function ModifierProfil() {
         data.append("photo", "");
       }
 
-      const res = await axios.put(`http://localhost:8080/admin/${user.id}`, data);
+      const res = await axios.put(`https://ivoirtech-innov.onrender.com/admin/${user.id}`, data);
 
       toast.success("Profil mis à jour avec succès !");
       setUser(res.data);
@@ -91,7 +91,7 @@ export default function ModifierProfil() {
       setFormData((prev) => ({ ...prev, password: "", confirmPassword: "" }));
       setPhotoDeleted(false);
       setPhotoFile(null);
-      setPhotoPreview(res.data.photo ? `http://localhost:8080${res.data.photo}` : null);
+      setPhotoPreview(res.data.photo ? `https://ivoirtech-innov.onrender.com${res.data.photo}` : null);
 
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {

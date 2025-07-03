@@ -28,13 +28,13 @@ export default function ModifierArticle() {
   useEffect(() => {
     (async () => {
       try {
-        const res  = await fetch(`http://localhost:8080/products/${id}`);
+        const res  = await fetch(`https://ivoirtech-innov.onrender.com/products/${id}`);
         const data = await res.json();
         setFormData(data);
         setPreview(
           data.img?.startsWith('http')
             ? data.img
-            : `http://localhost:8080/uploads/${data.img}`
+            : `https://ivoirtech-innov.onrender.com/uploads/${data.img}`
         );
         setExistingSelectedImages(Array.isArray(data.images) ? data.images : []);
         setLoading(false);
@@ -89,7 +89,7 @@ export default function ModifierArticle() {
     existingSelectedImages.forEach((n) => form.append('existingImages[]', n));
 
     try {
-      const res = await fetch(`http://localhost:8080/products/${id}`, {
+      const res = await fetch(`https://ivoirtech-innov.onrender.com/products/${id}`, {
         method: 'PUT',
         body: form
       });
@@ -156,7 +156,7 @@ export default function ModifierArticle() {
             <p>Images secondaires existantes (décochez pour supprimer)</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               {formData.images.map((img, i) => {
-                const src = img.startsWith('http') ? img : `http://localhost:8080/uploads/${img}`;
+                const src = img.startsWith('http') ? img : `https://ivoirtech-innov.onrender.com/uploads/${img}`;
                 return (
                   <label key={i}>
                     <input

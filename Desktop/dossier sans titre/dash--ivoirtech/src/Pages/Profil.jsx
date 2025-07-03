@@ -20,7 +20,7 @@ export default function Profil() {
           {user.photo && (
             <div className="photo-preview">
               <img
-                src={`http://localhost:8080${user.photo}`}
+                src={`https://ivoirtech-innov.onrender.com${user.photo}`}
                 alt="Photo de profil"
                 className="user-avatar-2"
               />

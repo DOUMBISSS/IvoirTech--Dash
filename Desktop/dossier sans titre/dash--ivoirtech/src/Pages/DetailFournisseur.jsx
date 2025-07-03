@@ -41,13 +41,13 @@ export default function DetailFournisseur() {
 
     (async () => {
       try {
-        const r1 = await fetch(`http://localhost:8080/fournisseur/${id}`);
+        const r1 = await fetch(`https://ivoirtech-innov.onrender.com/fournisseur/${id}`);
         const d1 = await r1.json();
         setFournisseur(d1);
         setProduitsLivres(d1.produitsLivres || []);
 
         const adminId = user._id || user.id;
-        const r2 = await fetch(`http://localhost:8080/admin/${adminId}`);
+        const r2 = await fetch(`https://ivoirtech-innov.onrender.com/admin/${adminId}`);
         const d2 = await r2.json();
         setProducts(d2.admin?.products || []);
       } catch (err) {
@@ -94,7 +94,7 @@ export default function DetailFournisseur() {
         produitsLivres: toSend
       };
 
-      const res = await fetch(`http://localhost:8080/fournisseur/${id}`, {
+      const res = await fetch(`https://ivoirtech-innov.onrender.com/fournisseur/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

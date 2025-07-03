@@ -22,7 +22,7 @@ export default function DetailClient() {
 
     const fetchClient = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/clients/${id}`);
+        const response = await fetch(`https://ivoirtech-innov.onrender.com/clients/${id}`);
         const data = await response.json();
 
         if (!response.ok) throw new Error(data.message || 'Client introuvable');

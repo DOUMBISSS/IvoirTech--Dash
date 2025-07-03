@@ -27,7 +27,7 @@ export default function AjouterFournisseur() {
         return;
       }
       try {
-        const res  = await fetch(`http://localhost:8080/admin/${adminId}`);
+        const res  = await fetch(`https://ivoirtech-innov.onrender.com/admin/${adminId}`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Erreur serveur');
         if (Array.isArray(data.admin?.products)) setProducts(data.admin.products);
@@ -95,7 +95,7 @@ export default function AjouterFournisseur() {
     };
 
     try {
-      const res = await fetch('http://localhost:8080/fournisseur', {
+      const res = await fetch('https://ivoirtech-innov.onrender.com/fournisseur', {
         method : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body   : JSON.stringify(payload)
